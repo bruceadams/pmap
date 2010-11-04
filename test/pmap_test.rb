@@ -24,6 +24,14 @@ class Pmap_Test < Test::Unit::TestCase
     assert(elapsed < 2, 'Parallel sleeps too slow: %.1f seconds' % elapsed)
   end
 
+  def test_bad_thread_limits
+    assert_raise(ArgumentError) {(1..10).pmap(-1){ sleep 1 }}
+    assert_raise(ArgumentError) {(1..10).peach(0){ sleep 1 }}
+    assert_raise(ArgumentError) {(1..10).peach(0.99){ sleep 1 }}
+    assert_raise(ArgumentError) {(1..10).pmap('a'){ sleep 1 }}
+    assert_raise(ArgumentError) {(1..10).peach([1,2,3]){ sleep 1 }}
+  end
+
   def test_thread_limits
     start = Time.now
     (1..10).pmap(5){ sleep 1 }
@@ -32,4 +40,11 @@ class Pmap_Test < Test::Unit::TestCase
     assert(elapsed <  3, 'Parallel sleeps too slow: %.1f seconds' % elapsed)
   end
 
+  def test_defaut_thread_limit
+    start = Time.now
+    (1..128).pmap{ sleep 1 }
+    elapsed = Time.now-start
+    assert(elapsed >= 2, 'Limited threads too fast: %.1f seconds' % elapsed)
+    assert(elapsed <  3, 'Parallel sleeps too slow: %.1f seconds' % elapsed)
+  end
 end
