@@ -31,8 +31,8 @@ module Enumerable
   end
 
   # This is doing some extra work: building a return array that is
-  # thrown away.  How can I share the core code of "pmap" here and
-  # omit the output array creation?
+  # thrown away. How can I share the core code of "pmap" here and omit
+  # the output array creation?
   def peach(thread_count=nil, &proc)
     pmap(thread_count, &proc)
     self
