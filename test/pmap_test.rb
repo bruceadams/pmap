@@ -1,14 +1,24 @@
 #!/usr/bin/env ruby
 
 require 'test/unit'
-require '../lib/pmap'
+require 'pmap'
 
 class Pmap_Test < Test::Unit::TestCase
+
+  def bad_test_noproc_range
+    range = (1..10)
+    assert_equal(range.map, range.pmap)
+  end
 
   def test_basic_range
     proc = Proc.new {|x| x*x}
     range = (1..10)
     assert_equal(range.map(&proc), range.pmap(&proc))
+  end
+
+  def bad_test_noproc_array
+    array = (1..10).to_a
+    assert_equal(array.map, array.pmap)
   end
 
   def test_basic_array
