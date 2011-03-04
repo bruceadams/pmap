@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Bruce Adams']
   s.email       = ['bruce.adams@acm.org']
-  s.homepage    = ''
+  s.homepage    = 'https://github.com/bruceadams/pmap'
   s.summary     = %q{Add parallel methods into Enumerable: pmap and peach}
   s.description = %q{Add parallel methods into Enumerable: pmap and peach}
 
