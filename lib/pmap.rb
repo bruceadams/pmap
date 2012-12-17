@@ -11,11 +11,18 @@ module PMap
       # [thread_count] is number of threads to create. Optional.
       def pmap(thread_count=nil, &proc)
         in_array = self.to_a        # I'm not sure how expensive this is...
+        out_array = Array.new(in_array.size)
+        process_core(thread_count, in_array, out_array, &proc)
+        out_array
+      end
+
+      def process_core(thread_count, in_array, out_array, &proc)
         thread_count = thread_count(thread_count, in_array)
         size = in_array.size
-        out_array = Array.new(size)
+
         semaphore = Mutex.new
         index = -1                  # Our use of index is protected by semaphore
+
         threads = (0...thread_count).map {
           Thread.new {
             i = nil
@@ -25,8 +32,8 @@ module PMap
           }
         }
         threads.each {|t| t.join}
-        out_array
       end
+      private :process_core
 
       def thread_count(user_requested_count, items)
         user_requested_count ||= $pmap_default_thread_count
