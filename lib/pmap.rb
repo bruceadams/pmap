@@ -10,12 +10,9 @@ module PMap
       # Requires a block of code to run for each Enumerable item.
       # [thread_count] is number of threads to create. Optional.
       def pmap(thread_count=nil, &proc)
-        raise ArgumentError, "thread_count must be at least one." unless
-          thread_count.nil? or (thread_count.respond_to?(:>=) and thread_count >= 1)
-        # This seems overly fussy... (code smell)
         in_array = self.to_a        # I'm not sure how expensive this is...
+        thread_count = thread_count(thread_count, in_array)
         size = in_array.size
-        thread_count = [thread_count||$pmap_default_thread_count, size].min
         out_array = Array.new(size)
         semaphore = Mutex.new
         index = -1                  # Our use of index is protected by semaphore
@@ -30,6 +27,14 @@ module PMap
         threads.each {|t| t.join}
         out_array
       end
+
+      def thread_count(user_requested_count, items)
+        user_requested_count ||= $pmap_default_thread_count
+        raise ArgumentError, "thread_count must be at least one." unless
+          user_requested_count.respond_to?(:>=) && user_requested_count >= 1
+        [user_requested_count, items.size].min
+      end
+      private :thread_count
 
       # Parallel "each" for any Enumerable.
       # Requires a block of code to run for each Enumerable item.
