@@ -4,6 +4,11 @@ require 'thread' unless defined?(Mutex)
 $pmap_default_thread_count ||= 64
 
 module PMap
+  class DummyOutput
+    def []=(idx)
+    end
+  end
+
   def self.included(base)
     base.class_eval do
       # Parallel "map" for any Enumerable.
@@ -47,10 +52,7 @@ module PMap
       # Requires a block of code to run for each Enumerable item.
       # [thread_count] is number of threads to create. Optional.
       def peach(thread_count=nil, &proc)
-        # This is doing some extra work: building a return array that is
-        # thrown away. How can I share the core code of "pmap" here and omit
-        # the output array creation?
-        pmap(thread_count, &proc)
+        process_core(thread_count, self.to_a, DummyOutput.new, &proc)
         self
       end
     end
