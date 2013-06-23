@@ -32,7 +32,7 @@ class Pmap_Test < Test::Unit::TestCase
 
   def test_time_savings
     start = Time.now
-    (1..10).pmap{ sleep 1 }
+    (1..10).peach{ sleep 1 }
     elapsed = Time.now-start
     assert(elapsed < 2, 'Parallel sleeps too slow: %.1f seconds' % elapsed)
   end

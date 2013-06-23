@@ -5,7 +5,7 @@ $pmap_default_thread_count ||= 64
 
 module PMap
   class DummyOutput
-    def []=(idx)
+    def []=(idx, val)
     end
   end
 
