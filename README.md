@@ -32,6 +32,11 @@ Ruby threads means the requests will be issued very quickly, well
 before the responses start coming back. As responses come back, they
 will be processed as they arrive.
 
+Thread Count
+----------------
+
+The thread count defaults to 64 and is set based on `$pmap_default_thread_count`.
+
 Example
 -------
 
