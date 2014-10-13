@@ -1,4 +1,4 @@
-pmap [![Build Status](https://secure.travis-ci.org/bruceadams/pmap.png)](http://travis-ci.org/bruceadams/pmap) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/bruceadams/pmap)
+pmap [![Build Status](https://secure.travis-ci.org/bruceadams/pmap.png)](http://travis-ci.org/bruceadams/pmap) [![Code Climate](https://codeclimate.com/github/bruceadams/pmap.png)](https://codeclimate.com/github/bruceadams/pmap)
 ====
 
 This Ruby gem adds two methods to any Enumerable (notably including
