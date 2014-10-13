@@ -9,11 +9,11 @@ rvm:
   - 2.2.0-preview1
   - jruby-18mode
   - jruby-19mode
-  - rbx-2
-  - ruby-head
   - jruby-head
+  - rbx-2
   - ree
+  - ruby-head
 matrix:
   allow_failures:
+    - rvm: 2.2.0-preview1       # test/unit isn't available in 2.2
     - rvm: ruby-head
-    - rvm: jruby-head
