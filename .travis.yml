@@ -15,5 +15,4 @@ rvm:
   - ruby-head
 matrix:
   allow_failures:
-    - rvm: 2.2.0-preview1       # test/unit isn't available in 2.2
     - rvm: ruby-head
