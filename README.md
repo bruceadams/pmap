@@ -32,11 +32,6 @@ Ruby threads means the requests will be issued very quickly, well
 before the responses start coming back. As responses come back, they
 will be processed as they arrive.
 
-Thread Count
-----------------
-
-The thread count defaults to 64 and is set based on `$pmap_default_thread_count`.
-
 Example
 -------
 
@@ -54,3 +49,19 @@ get_quote ranges averages 0.5 seconds.
     # This will take about half a second;
     # however long the single slowest response took.
     stock_quotes = stock_symbols.pmap {|s| get_quote(s)}
+    
+Thread Count
+------------
+
+The thread count defaults to 64 and is set based on `$pmap_default_thread_count`.
+
+You can also set the thread count per call by passing it as an argument to the `pmap` and `peach` methods.
+
+    # Use the default thread count (64)
+    (1..128).peach { |i| sleep 1 } # Takes 2 seconds
+    
+    # Use a thread count of 128
+    (1..128).peach(128) { |i| sleep 1 } # Takes 1 second
+    
+    # Use a thread count of 2
+    (1..128).peach(2) { |i| sleep 1 } # Takes 64 seconds
