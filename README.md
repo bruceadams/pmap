@@ -57,14 +57,11 @@ The thread count defaults to 64 and is set based on `$pmap_default_thread_count`
 
 You can also set the thread count per call by passing it as an argument to the `pmap` and `peach` methods.
 
-    # This will use the default thread count 
-    # and take around 1 second to complete
-    (1..64).peach { |i| puts i; sleep 1 }
+    # Use the default thread count (64)
+    (1..128).peach { |i| sleep 1 } # Takes 2 seconds
     
-    # This will use a thread count of 32 
-    # and take around 2 seconds to complete
-    (1..64).peach(32) { |i| puts i; sleep 1 }
+    # Use a thread count of 128
+    (1..128).peach(128) { |i| sleep 1 } # Takes 1 second
     
-    # This will use a thread count of 2 
-    # and take around 32 seconds to complete
-    (1..64).peach(2) { |i| puts i; sleep 1 }
+    # Use a thread count of 2
+    (1..128).peach(2) { |i| sleep 1 } # Takes 64 seconds
