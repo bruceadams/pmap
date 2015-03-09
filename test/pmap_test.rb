@@ -3,10 +3,18 @@
 $LOAD_PATH << File.expand_path( File.dirname(__FILE__) + '/../lib' )
 
 require 'test/unit'
+require 'flexmock/test_unit'
 require 'rubygems'
 require 'pmap'
 
 class Pmap_Test < Test::Unit::TestCase
+  def test_connection_pooling
+    active_record_object = flexmock("ActiveRecord::Base")
+    test_array = flexmock((1..10).to_a)
+    active_record_object.should_receive('pmap_set_connection_pool_size').with(10).once
+    active_record_object.should_receive('pmap_reset_connection_pool_size').once
+    test_array.pmap(active_record_object: active_record_object) { nil }
+  end
 
   def bad_test_noproc_range
     range = (1..10)
@@ -41,8 +49,8 @@ class Pmap_Test < Test::Unit::TestCase
     assert_raise(ArgumentError) {(1..10).pmap(-1){ sleep 1 }}
     assert_raise(ArgumentError) {(1..10).peach(0){ sleep 1 }}
     assert_raise(ArgumentError) {(1..10).peach(0.99){ sleep 1 }}
-    assert_raise(ArgumentError) {(1..10).pmap('a'){ sleep 1 }}
-    assert_raise(ArgumentError) {(1..10).peach([1,2,3]){ sleep 1 }}
+    assert_raise(TypeError) {(1..10).pmap('a'){ sleep 1 }}
+    assert_raise(TypeError) {(1..10).peach([1,2,3]){ sleep 1 }}
   end
 
   def test_thread_limits
