@@ -33,8 +33,8 @@ module PMap
         if options.is_a? Numeric
           self.max_thread_count = options_or_thread_count
         else
-          self.max_thread_count = options_or_thread_count[:thread_count]
-          self.active_record_object = options_or_thread_count[:active_record_object]
+          self.max_thread_count = options_or_thread_count.try(:[],:thread_count)
+          self.active_record_object = options_or_thread_count.try(:[],:active_record_object)
         end
       end
 
