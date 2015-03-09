@@ -23,7 +23,9 @@ module PMap
         configure(options_or_thread_count)
         in_array = self.to_a        # I'm not sure how expensive this is...
         out_array = Array.new(in_array.size)
+        processing_started
         process_core(max_thread_count, in_array, out_array, &proc)
+        processing_completed
         out_array
       end
 
@@ -68,8 +70,6 @@ module PMap
         semaphore = Mutex.new
         index = -1                  # Our use of index is protected by semaphore
 
-        processing_started
-
         threads = (0...min_thread_count).map {
           Thread.new {
             i = nil
@@ -78,9 +78,7 @@ module PMap
             end
           }
         }
-        result = threads.each {|t| t.join}
-        processing_completed
-        result
+        threads.each {|t| t.join}
       end
       private :process_core
 
