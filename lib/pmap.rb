@@ -11,24 +11,66 @@ module PMap
 
   def self.included(base)
     base.class_eval do
+      attr_accessor :max_thread_count
+      attr_accessor :min_thread_count
+      attr_accessor :active_record_object
+      attr_accessor :previous_pool_size
+
       # Parallel "map" for any Enumerable.
       # Requires a block of code to run for each Enumerable item.
       # [thread_count] is number of threads to create. Optional.
-      def pmap(thread_count=nil, &proc)
+      def pmap(options_or_thread_count = {}, &proc)
+        configure(options_or_thread_count)
         in_array = self.to_a        # I'm not sure how expensive this is...
         out_array = Array.new(in_array.size)
-        process_core(thread_count, in_array, out_array, &proc)
+        process_core(max_thread_count, in_array, out_array, &proc)
         out_array
       end
 
+      def configure(options_or_thread_count = {})
+        # This is ONLY here to provide support for the previous version of #pmap which just passes
+        # the thread count
+        if options.is_a? Numeric
+          self.max_thread_count = options_or_thread_count
+        else
+          self.max_thread_count = options_or_thread_count[:thread_count]
+          self.active_record_object = options_or_thread_count[:active_record_object]
+        end
+      end
+
+      def processing_started
+        increase_active_record_pool_size
+      end
+
+      def processing_completed
+        reset_active_record_pool_size
+      end
+
+      def increase_active_record_pool_size
+        if active_record_object && active_record_object.connected?
+          self.previous_pool_size = active_record_object.connection_pool.instance_variable_get('@size') || 0
+          if previous_pool_size < min_thread_count
+            active_record_object.connection_pool.instance_variable_set('@size', min_thread_count)
+          end
+        end
+      end
+
+      def reset_active_record_pool_size
+        if active_record_object && active_record_object.connected? && previous_pool_size
+          active_record_object.connection_pool.instance_variable_set('@size', previous_pool_size)
+        end
+      end
+
       def process_core(thread_count, in_array, out_array, &proc)
-        thread_count = thread_count(thread_count, in_array)
+        self.min_thread_count = thread_count(thread_count, in_array)
         size = in_array.size
 
         semaphore = Mutex.new
         index = -1                  # Our use of index is protected by semaphore
 
-        threads = (0...thread_count).map {
+        processing_started
+
+        threads = (0...min_thread_count).map {
           Thread.new {
             i = nil
             while (semaphore.synchronize {i = (index += 1)}; i < size)
@@ -36,7 +78,9 @@ module PMap
             end
           }
         }
-        threads.each {|t| t.join}
+        result = threads.each {|t| t.join}
+        processing_completed
+        result
       end
       private :process_core
 
