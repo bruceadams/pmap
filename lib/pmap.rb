@@ -23,9 +23,9 @@ module PMap
         configure(options_or_thread_count)
         in_array = self.to_a        # I'm not sure how expensive this is...
         out_array = Array.new(in_array.size)
-        processing_started
+        increase_active_record_pool_size
         process_core(max_thread_count, in_array, out_array, &proc)
-        processing_completed
+        reset_active_record_pool_size
         out_array
       end
 
@@ -38,14 +38,6 @@ module PMap
           self.max_thread_count = options_or_thread_count.try(:[],:thread_count)
           self.active_record_object = options_or_thread_count.try(:[],:active_record_object)
         end
-      end
-
-      def processing_started
-        increase_active_record_pool_size
-      end
-
-      def processing_completed
-        reset_active_record_pool_size
       end
 
       def increase_active_record_pool_size
