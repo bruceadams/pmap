@@ -65,3 +65,17 @@ You can also set the thread count per call by passing it as an argument to the `
     
     # Use a thread count of 2
     (1..128).peach(2) { |i| sleep 1 } # Takes 64 seconds
+
+Active Record
+------------
+
+If you are using active record within the individual threads you'll need to set the connection pool.  You can pass options into the `pmap` or `peach` call to do so:
+
+    # Use the default thread count and update the active record connection pool
+    (1..128).peach(active_record_object: ActiveRecord::Base) { |i| sleep 1 } # Takes 2 seconds
+    
+    # Use a thread count of 128 and update the active record connection pool
+    (1..128).peach(active_record_object: ActiveRecord::Base, thread_count: 128) { |i| sleep 1 } # Takes 1 second
+    
+    # Use a thread count of 2 and update the active record connection pool
+    (1..128).peach(active_record_object: ActiveRecord::Base, thread_count: 2) { |i| sleep 1 } # Takes 64 seconds
