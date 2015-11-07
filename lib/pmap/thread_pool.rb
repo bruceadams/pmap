@@ -23,7 +23,6 @@ module PMap
         max.respond_to?(:>=) && max >= 1
 
       @max = max
-      @shutting_down = false
       @jobs = Queue.new
       @workers = []
     end
@@ -35,16 +34,15 @@ module PMap
     #
     def schedule(*args, &job)
       @jobs << [job, args] 
-      spawn_worker if !@shutting_down && @workers.size < @max 
+      spawn_worker if @workers.size < @max 
     end
 
     # Public: Shuts down the thread pool and waits for any running threads to
     #         complete
     #
     def shutdown
-      @shutting_down = true
       @workers.size.times do 
-        schedule { throw(:stop_working) }
+        @jobs << :stop_working
       end
       @workers.each(&:join)
     end
@@ -55,11 +53,9 @@ module PMap
     #
     def spawn_worker
       thread = Thread.new do 
-        catch(:stop_working) do
-          loop do
-            job, args = @jobs.pop
-            job.call(*args)
-          end
+        while (command = @jobs.pop) != :stop_working
+          job, args = command
+          job.call(*args)
         end
       end
 
