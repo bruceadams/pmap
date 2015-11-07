@@ -1,5 +1,5 @@
 require 'thread' unless defined?(Mutex)
-require_relative "pmap/thread_pool"
+require "pmap/thread_pool"
 
 # Global variable for the default thread pool size.
 $pmap_default_thread_count ||= 64
