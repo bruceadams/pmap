@@ -53,7 +53,9 @@ module PMap
       # Requires a block of code to run for each Enumerable item.
       # [thread_count] is number of threads to create. Optional.
       def peach(thread_count=nil, &proc)
-        process_core(thread_count, self.to_a, DummyOutput.new, &proc)
+        peach_with_index(thread_count) do |item, index|
+          proc.call(item)
+        end
         self
       end
 
