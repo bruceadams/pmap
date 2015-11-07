@@ -60,4 +60,15 @@ class Pmap_Test < Test::Unit::TestCase
     assert(elapsed >= 2, 'Limited threads too fast: %.1f seconds' % elapsed)
     assert(elapsed <  3, 'Parallel sleeps too slow: %.1f seconds' % elapsed)
   end
+
+  def test_peach_with_index
+    subject = ["a", "b", "c"]
+    output  = []
+
+    subject.peach_with_index do |letter, index|
+      output << [letter, index]
+    end
+
+    assert_equal([["a", 0], ["b", 1], ["c", 2]].sort, output.sort)
+  end
 end

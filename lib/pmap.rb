@@ -1,4 +1,5 @@
 require 'thread' unless defined?(Mutex)
+require_relative "pmap/thread_pool"
 
 # Global variable for the default thread pool size.
 $pmap_default_thread_count ||= 64
@@ -53,6 +54,21 @@ module PMap
       # [thread_count] is number of threads to create. Optional.
       def peach(thread_count=nil, &proc)
         process_core(thread_count, self.to_a, DummyOutput.new, &proc)
+        self
+      end
+
+      # Public: Parallel each_with_index for any Enumerable
+      #
+      # thread_count - maximum number of threads to create (optional)
+      #
+      def peach_with_index(thread_count=nil, &proc)
+        thread_count ||= $pmap_default_thread_count
+        pool = ThreadPool.new(thread_count)
+
+        each_with_index do |item, index|
+          pool.schedule(item, index, &proc)
+        end
+        pool.shutdown
         self
       end
     end
