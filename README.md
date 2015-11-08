@@ -1,11 +1,12 @@
 pmap [![Build Status](https://secure.travis-ci.org/bruceadams/pmap.png)](http://travis-ci.org/bruceadams/pmap) [![Code Climate](https://codeclimate.com/github/bruceadams/pmap.png)](https://codeclimate.com/github/bruceadams/pmap)
 ====
 
-This Ruby gem adds two methods to any Enumerable (notably including
+This Ruby gem adds three methods to any Enumerable (notably including
 any Array). The two added methods are:
 
 * _pmap_ parallel map
 * _peach_ parallel each
+* _peach_with_index_ parallel each_with_index
 
 Threading in Ruby has limitations.
 ----------------------------------
