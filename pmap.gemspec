@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.version     = Pmap::VERSION
   s.platform    = Gem::Platform::RUBY
   s.license     = 'Apache-2.0'
-  s.authors     = ['Bruce Adams', 'Jake Goulding']
-  s.email       = ['bruce.adams@acm.org', 'jake.goulding@gmail.com']
+  s.authors     = ['Bruce Adams', 'Jake Goulding', 'David Biehl']
+  s.email       = ['bruce.adams@acm.org', 'jake.goulding@gmail.com', 'me@davidbiehl.com']
   s.homepage    = 'https://github.com/bruceadams/pmap'
   s.summary     = %q{Add parallel methods into Enumerable: pmap and peach}
   s.description = %q{Add parallel methods into Enumerable: pmap and peach}
