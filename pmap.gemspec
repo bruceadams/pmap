@@ -6,6 +6,7 @@ Gem::Specification.new do |s|
   s.name        = 'pmap'
   s.version     = Pmap::VERSION
   s.platform    = Gem::Platform::RUBY
+  s.license     = 'Apache-2.0'
   s.authors     = ['Bruce Adams', 'Jake Goulding']
   s.email       = ['bruce.adams@acm.org', 'jake.goulding@gmail.com']
   s.homepage    = 'https://github.com/bruceadams/pmap'
