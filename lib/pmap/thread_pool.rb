@@ -4,7 +4,7 @@
 #
 #   pool = PMap::ThreadPool.new(16)
 #   array.each do |item|
-#     pool.schedule do 
+#     pool.schedule do
 #       item.some_io_intense_operation
 #     end
 #   end
@@ -33,15 +33,15 @@ module PMap
     # &job  - the block that will be executed on the thread
     #
     def schedule(*args, &job)
-      @jobs << [job, args] 
-      spawn_worker if @workers.size < @max 
+      @jobs << [job, args]
+      spawn_worker if @workers.size < @max
     end
 
     # Public: Shuts down the thread pool and waits for any running threads to
     #         complete
     #
     def shutdown
-      @workers.size.times do 
+      @workers.size.times do
         @jobs << :stop_working
       end
       @workers.each(&:join)
@@ -52,15 +52,14 @@ module PMap
     # Private: Spawns a new thread to work on the scheduled jobs
     #
     def spawn_worker
-      thread = Thread.new do 
+      thread = Thread.new do
         while (command = @jobs.pop) != :stop_working
           job, args = command
           job.call(*args)
         end
       end
 
-      @workers << thread 
+      @workers << thread
     end
   end
 end
-
