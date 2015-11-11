@@ -5,15 +5,49 @@ require "pmap/thread_pool"
 $pmap_default_thread_count ||= 64
 
 module PMap
+  # @!method pmap
+  #
+  #   Parallel #map for any Enumerable.
+  #
+  #   Requires a block of code to run for each Enumerable item.
+  #
+  #   @see http://ruby-doc.org/core-2.2.3/Enumerable.html#method-i-map
+  #
+  #   @param thread_count [Integer] maximum number of threads to create 
+  #     (optional)
+  #
+  #   @return [Array] of mapped objects
+  #
+
+  # @!method peach
+  #
+  #   Parallel #each for any Enumerable.
+  #
+  #   Requires a block of code to run for each Enumerable item.
+  # 
+  #   @param thead_count [Integer] maximum number of threads to create 
+  #     (optional)
+  #
+  #   @return [void]
+  #
+
+  # @!method peach_with_index
+  #
+  #   Parallel #each_with_index for any Enumerable.
+  #
+  #   Requires a block of code to run for each Enumerable item.
+  #   
+  #   @see http://ruby-doc.org/core-2.2.3/Enumerable.html#method-i-each_with_index
+  #
+  #   @param thread_count [Integer] maximum number of threads to create 
+  #     (optional)
+  #
+  #   @return [void]
+  #
   def self.included(base)
     base.class_eval do
 
-      # Public: Parallel "map" for any Enumerable.
-      #
-      # thread_count - maximum number of threads to create (optional)
-      #
-      # Requires a block of code to run for each Enumerable item.
-      #
+      # @see PMap#pmap
       def pmap(thread_count=nil, &proc)
         Array.new.tap do |result|
           peach_with_index(thread_count) do |item, index|
@@ -22,12 +56,7 @@ module PMap
         end
       end
 
-      # Public: Parallel "each" for any Enumerable.
-      #
-      # thread_count - maximum number of threads to create (optional)
-      #
-      # Requires a block of code to run for each Enumerable item.
-      #
+      # @see PMap#peach
       def peach(thread_count=nil, &proc)
         peach_with_index(thread_count) do |item, index|
           proc.call(item)
@@ -35,12 +64,7 @@ module PMap
         self
       end
 
-      # Public: Parallel each_with_index for any Enumerable
-      #
-      # thread_count - maximum number of threads to create (optional)
-      #
-      # Requires a block of code to run for each Enumerable item.
-      #
+      # @see PMap#peach_with_index
       def peach_with_index(thread_count=nil, &proc)
         thread_count ||= $pmap_default_thread_count
         pool = ThreadPool.new(thread_count)
