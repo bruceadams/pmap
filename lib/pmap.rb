@@ -15,9 +15,11 @@ module PMap
       # Requires a block of code to run for each Enumerable item.
       #
       def pmap(thread_count=nil, &proc)
+        array_mutex = Mutex.new
         Array.new.tap do |result|
           peach_with_index(thread_count) do |item, index|
-            result[index] = proc.call(item)
+            value = proc.call(item)
+            array_mutex.synchronize { result[index] = value }
           end
         end
       end
