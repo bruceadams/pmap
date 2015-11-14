@@ -25,9 +25,11 @@ class Pmap_Test < Test::Unit::TestCase
   end
 
   def test_basic_array
-    proc = Proc.new {|x| x*x*x}
-    array = (1..10).to_a
-    assert_equal(array.map(&proc), array.pmap(&proc))
+    1_000.times do
+      proc = Proc.new {|x| x*x*x}
+      array = (1..10).to_a
+      assert_equal(array.map(&proc), array.pmap(&proc))
+    end
   end
 
   def test_time_savings
