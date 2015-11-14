@@ -78,6 +78,10 @@ class Pmap_Test < Test::Unit::TestCase
     subject = [["a"], [["b"]], [[["c"]]]]
     proc    = Proc.new { |x| x + ["X"] }
 
-    assert_equal(subject.flat_map(&proc), subject.flat_pmap(&proc))
+    if subject.respond_to?(:flat_map)
+      assert_equal(subject.flat_map(&proc), subject.flat_pmap(&proc))
+    else
+      assert_equal(subject.map(&proc).flatten(1), subject.flat_pmap(&proc))
+    end
   end
 end
