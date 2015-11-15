@@ -48,6 +48,8 @@ module PMap
       # Requires a block of code to run for each Enumerable item.
       #
       def peach_with_index(thread_count=nil, &proc)
+        return each_with_index unless proc
+
         thread_count ||= $pmap_default_thread_count
         pool = ThreadPool.new(thread_count)
 

@@ -18,6 +18,11 @@ class Pmap_Test < Test::Unit::TestCase
     assert_equal(range.each.to_a, range.peach.to_a)
   end
 
+  def test_noproc_peach_with_index
+    range = (1..10)
+    assert_equal(range.each_with_index.to_a, range.peach_with_index.to_a)
+  end
+
   def test_basic_range
     proc = Proc.new {|x| x*x}
     range = (1..10)
