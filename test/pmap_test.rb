@@ -73,4 +73,15 @@ class Pmap_Test < Test::Unit::TestCase
 
     assert_equal([["a", 0], ["b", 1], ["c", 2]].sort, output.sort)
   end
+
+  def test_flat_pmap
+    subject = [["a"], [["b"]], [[["c"]]]]
+    proc    = Proc.new { |x| x + ["X"] }
+
+    if subject.respond_to?(:flat_map)
+      assert_equal(subject.flat_map(&proc), subject.flat_pmap(&proc))
+    else
+      assert_equal(subject.map(&proc).flatten(1), subject.flat_pmap(&proc))
+    end
+  end
 end
