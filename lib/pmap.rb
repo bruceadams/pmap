@@ -67,6 +67,8 @@ module PMap
       # Requires a block of code to run for each Enumerable item
       #
       def flat_pmap(thread_count=nil, &proc)
+        return flat_map unless proc
+        
         pmap(thread_count, &proc).flatten(1)
       end
     end

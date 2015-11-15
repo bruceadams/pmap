@@ -95,4 +95,12 @@ class Pmap_Test < Test::Unit::TestCase
       assert_equal(subject.map(&proc).flatten(1), subject.flat_pmap(&proc))
     end
   end
+
+  def test_noproc_flat_pmap
+    subject = [["a"], [["b"]], [[["c"]]]]
+
+    if subject.respond_to?(:flat_map)
+      assert_equal(subject.flat_map.to_a, subject.flat_pmap.to_a)
+    end
+  end
 end
