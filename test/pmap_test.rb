@@ -13,6 +13,11 @@ class Pmap_Test < Test::Unit::TestCase
     assert_equal(range.map.to_a, range.pmap.to_a)
   end
 
+  def test_noproc_peach
+    range = (1..10)
+    assert_equal(range.each.to_a, range.peach.to_a)
+  end
+
   def test_basic_range
     proc = Proc.new {|x| x*x}
     range = (1..10)
@@ -31,6 +36,7 @@ class Pmap_Test < Test::Unit::TestCase
       assert_equal(array.map(&proc), array.pmap(&proc))
     end
   end
+
 
   def test_time_savings
     start = Time.now
