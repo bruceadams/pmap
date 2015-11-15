@@ -15,6 +15,8 @@ module PMap
       # Requires a block of code to run for each Enumerable item.
       #
       def pmap(thread_count=nil, &proc)
+        return self unless proc
+        
         array_mutex = Mutex.new
         Array.new.tap do |result|
           peach_with_index(thread_count) do |item, index|

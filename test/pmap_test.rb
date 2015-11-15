@@ -8,9 +8,9 @@ require 'pmap'
 
 class Pmap_Test < Test::Unit::TestCase
 
-  def bad_test_noproc_range
+  def test_noproc_range
     range = (1..10)
-    assert_equal(range.map, range.pmap)
+    assert_equal(range.map.to_a, range.pmap.to_a)
   end
 
   def test_basic_range
@@ -19,9 +19,9 @@ class Pmap_Test < Test::Unit::TestCase
     assert_equal(range.map(&proc), range.pmap(&proc))
   end
 
-  def bad_test_noproc_array
+  def test_noproc_array
     array = (1..10).to_a
-    assert_equal(array.map, array.pmap)
+    assert_equal(array.map.to_a, array.pmap.to_a)
   end
 
   def test_basic_array
