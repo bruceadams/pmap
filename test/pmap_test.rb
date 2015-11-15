@@ -101,6 +101,8 @@ class Pmap_Test < Test::Unit::TestCase
 
     if subject.respond_to?(:flat_map)
       assert_equal(subject.flat_map.to_a, subject.flat_pmap.to_a)
+    else
+      assert_equal(subject.map.flatten(1).to_a, subject.flat_pmap.to_a)
     end
   end
 end
