@@ -10,9 +10,10 @@ module PMap
 
       # Public: Parallel "map" for any Enumerable.
       #
-      # thread_count - maximum number of threads to create (optional)
+      # When a block is given, each item is yielded to the block in a separate
+      # thread. When no block is given, an Enumerable is returned.
       #
-      # Requires a block of code to run for each Enumerable item.
+      # thread_count - maximum number of threads to create (optional)
       #
       def pmap(thread_count=nil, &proc)
         return self unless proc
@@ -28,9 +29,10 @@ module PMap
 
       # Public: Parallel "each" for any Enumerable.
       #
-      # thread_count - maximum number of threads to create (optional)
+      # When a block is given, each item is yielded to the block in a separate
+      # thread. When no block is given, an Enumerable is returned.
       #
-      # Requires a block of code to run for each Enumerable item.
+      # thread_count - maximum number of threads to create (optional)
       #
       def peach(thread_count=nil, &proc)
         if proc
@@ -41,11 +43,12 @@ module PMap
         self
       end
 
-      # Public: Parallel each_with_index for any Enumerable
+      # Public: Parallel "each_with_index" for any Enumerable
+      #
+      # When a block is given, each item is yielded to the block in a separate
+      # thread. When no block is given, an Enumerable is returned.
       #
       # thread_count - maximum number of threads to create (optional)
-      #
-      # Requires a block of code to run for each Enumerable item.
       #
       def peach_with_index(thread_count=nil, &proc)
         return each_with_index unless proc
@@ -60,11 +63,12 @@ module PMap
         self
       end
 
-      # Public: Parallel flat_map for any Enumerable
+      # Public: Parallel "flat_map" for any Enumerable
+      #
+      # When a block is given, each item is yielded to the block in a separate
+      # thread. When no block is given, an Enumerable is returned.
       #
       # thread_count - maximum number of threads to create (optional)
-      #
-      # Requires a block of code to run for each Enumerable item
       #
       def flat_pmap(thread_count=nil, &proc)
         return self unless proc
