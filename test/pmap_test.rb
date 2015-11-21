@@ -8,9 +8,19 @@ require 'pmap'
 
 class Pmap_Test < Test::Unit::TestCase
 
-  def bad_test_noproc_range
+  def test_noproc_range
     range = (1..10)
-    assert_equal(range.map, range.pmap)
+    assert_equal(range.map.to_a, range.pmap.to_a)
+  end
+
+  def test_noproc_peach
+    range = (1..10)
+    assert_equal(range.each.to_a, range.peach.to_a)
+  end
+
+  def test_noproc_peach_with_index
+    range = (1..10)
+    assert_equal(range.each_with_index.to_a, range.peach_with_index.to_a)
   end
 
   def test_basic_range
@@ -19,9 +29,9 @@ class Pmap_Test < Test::Unit::TestCase
     assert_equal(range.map(&proc), range.pmap(&proc))
   end
 
-  def bad_test_noproc_array
+  def test_noproc_array
     array = (1..10).to_a
-    assert_equal(array.map, array.pmap)
+    assert_equal(array.map.to_a, array.pmap.to_a)
   end
 
   def test_basic_array
@@ -31,6 +41,7 @@ class Pmap_Test < Test::Unit::TestCase
       assert_equal(array.map(&proc), array.pmap(&proc))
     end
   end
+
 
   def test_time_savings
     start = Time.now
@@ -82,6 +93,16 @@ class Pmap_Test < Test::Unit::TestCase
       assert_equal(subject.flat_map(&proc), subject.flat_pmap(&proc))
     else
       assert_equal(subject.map(&proc).flatten(1), subject.flat_pmap(&proc))
+    end
+  end
+
+  def test_noproc_flat_pmap
+    subject = [["a"], [["b"]], [[["c"]]]]
+
+    if subject.respond_to?(:flat_map)
+      assert_equal(subject.flat_map.to_a, subject.flat_pmap.to_a)
+    else
+      assert_equal(subject.map.to_a, subject.flat_pmap.to_a)
     end
   end
 end
