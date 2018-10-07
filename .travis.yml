@@ -5,10 +5,10 @@ rvm:
   - 2.3
   - 2.4
   - 2.5
+  - 2.6
   - jruby
   - jruby-head
   - rbx-3
-  - ree
   - ruby-head
 matrix:
   allow_failures:
