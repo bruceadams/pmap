@@ -67,8 +67,11 @@ class Pmap_Test < Test::Unit::TestCase
   end
 
   def test_defaut_thread_limit
-    last_size = (1..128).pmap{ ThreadGroup::Default.list.size }.last
-    assert_equal(65, last_size) # 65 = 64 threads, plus the main thread
+    start = Time.now
+    (1..128).pmap{ sleep 1 }
+    elapsed = Time.now-start
+    assert(elapsed >= 2, 'Limited threads too fast: %.1f seconds' % elapsed)
+    assert(elapsed <  3, 'Parallel sleeps too slow: %.1f seconds' % elapsed)
   end
 
   def test_peach_with_index
