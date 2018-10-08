@@ -2,22 +2,22 @@ pmap [![Build Status](https://secure.travis-ci.org/bruceadams/pmap.png)](http://
 ====
 
 This Ruby gem adds three methods to any Enumerable (notably including
-any Array). The two added methods are:
+any Array). The three added methods are:
 
 * _pmap_ parallel map
 * _peach_ parallel each
 * _peach_with_index_ parallel each_with_index
 
-Threading in Ruby has limitations.
+Threading in Ruby has limitations
 ----------------------------------
 
 Matz Ruby 1.8.* uses _green_ threads. All Ruby threads are run within
 a single thread in a single process. A single Ruby program will never
-use more than a single core of a mutli-core machine.
+use more than a single core of a multi-core machine.
 
 Matz Ruby 1.9.* uses _native_ threads. Each Ruby thread maps directly
 to a thread in the underlying operating system. In theory, a single
-Ruby program can use multpile cores. Unfortunately, there is a global
+Ruby program can use multiple cores. Unfortunately, there is a global
 interpreter lock _GIL_ that causes single-threaded behavior.
 
 JRuby also uses _native_ threads. JRuby avoids the global interpreter
@@ -50,7 +50,7 @@ get_quote ranges averages 0.5 seconds.
     # This will take about half a second;
     # however long the single slowest response took.
     stock_quotes = stock_symbols.pmap {|s| get_quote(s)}
-    
+
 Thread Count
 ------------
 
@@ -60,9 +60,9 @@ You can also set the thread count per call by passing it as an argument to the `
 
     # Use the default thread count (64)
     (1..128).peach { |i| sleep 1 } # Takes 2 seconds
-    
+
     # Use a thread count of 128
     (1..128).peach(128) { |i| sleep 1 } # Takes 1 second
-    
+
     # Use a thread count of 2
     (1..128).peach(2) { |i| sleep 1 } # Takes 64 seconds
