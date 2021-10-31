@@ -1,4 +1,4 @@
-pmap [![Build Status](https://secure.travis-ci.org/bruceadams/pmap.png)](http://travis-ci.org/bruceadams/pmap) [![Code Climate](https://codeclimate.com/github/bruceadams/pmap.png)](https://codeclimate.com/github/bruceadams/pmap)
+pmap [![Build status](https://github.com/bruceadams/pmap/actions/workflows/ruby.yml/badge.svg)](https://github.com/bruceadams/pmap/actions)
 ====
 
 This Ruby gem adds three methods to any Enumerable (notably including
