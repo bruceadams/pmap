@@ -1,5 +1,8 @@
-pmap [![Build status](https://github.com/bruceadams/pmap/actions/workflows/ruby.yml/badge.svg)](https://github.com/bruceadams/pmap/actions)
-====
+# pmap
+
+[![Build status](https://github.com/bruceadams/pmap/actions/workflows/ruby.yml/badge.svg)](https://github.com/bruceadams/pmap/actions)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
+[![Apache License](https://img.shields.io/github/license/bruceadams/pmap?logo=apache)](LICENSE)
 
 This Ruby gem adds three methods to any Enumerable (notably including
 any Array). The three added methods are:
